@@ -21,7 +21,7 @@ public/css/main.css
 .env.example
 .env.example-backup
 
-auth.json
+#auth.json
 auth-sandbox.json
 auth-live.json
 
