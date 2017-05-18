@@ -27,8 +27,8 @@ const config_vars = "https://api.heroku.com/apps/powerful-ridge-94414/releases/V
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-//dotenv.load({ path: '.env.example' });
-dotenv.Load({ path: config_vars });
+dotenv.load({ path: '.env' });
+//dotenv.Load({ path: config_vars });
 
 /**
  * Controllers (route handlers).
