@@ -22,8 +22,7 @@ const multer = require('multer');
 
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
-const config_vars = GET /apps/powerful-ridge-94414/releases/V15/config-vars;
-console.log(config_vars);
+const config_vars = "https://api.heroku.com/apps/powerful-ridge-94414/releases/V15/config-vars";
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
