@@ -36,3 +36,6 @@ bower_components
 # OS metadata
 .DS_Store
 Thumbs.db
+
+bfg-1.12.15.jar
+bfg.jar
