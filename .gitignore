@@ -17,7 +17,7 @@ tmp
 public/css/main.css
 
 # API keys and secrets
-.env
+#.env
 
 #auth.json
 
@@ -33,5 +33,4 @@ bower_components
 .DS_Store
 Thumbs.db
 
-bfg-1.12.15.jar
-bfg.jar
+gitcommands.md
