@@ -74,9 +74,10 @@ block content
         button#delete-btn.btn.btn-danger(type='submit')
           i.fa.fa-trash
           | Delete my account
-  script
-  $(document).ready(function(){
-    $("#delete-btn").click(function() {
-     alert("Are you sure");
-    });
-  });
+          | <script type='text/javascript'>
+          | $(document).ready(function(){
+          |  $("#delete-btn").click(function() {
+             alert("Are you sure");
+          |  });
+          | });
+          | </script>
