@@ -1,9 +1,9 @@
 $(document).ready(function() {
-  $("#delete-btn").click(function() {
-      if(confirm("Are you sure?")) {
-        document.forms[0].submit();
-      } else {
-        return false;
-      }
+    $("#delete-btn").submit(function() {
+        if ($("input[type='submit']").val() == "text 1") {
+            alert("Are you sure?");
+            $("input[type='submit']").val("text 2");
+            return false;
+        }
     });
 });
