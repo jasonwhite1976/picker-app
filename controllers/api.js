@@ -26,7 +26,8 @@
 foursquare.Venues = bluebird.promisifyAll(foursquare.Venues);
 foursquare.Users = bluebird.promisifyAll(foursquare.Users);
 */
-/**
+
+/*
  * GET /api
  * List of API examples.
  */
@@ -36,7 +37,7 @@ exports.getApi = (req, res) => {
   });
 };
 
-/**
+/*
  * GET /api/foursquare
  * Foursquare API example.
 
@@ -58,7 +59,7 @@ exports.getFoursquare = (req, res, next) => {
   .catch(next);
 };
 
-/**
+/*
  * GET /api/tumblr
  * Tumblr API example.
 
@@ -80,7 +81,7 @@ exports.getTumblr = (req, res, next) => {
   });
 };
 
-/**
+/*
  * GET /api/facebook
  * Facebook API example.
 
@@ -96,7 +97,7 @@ exports.getFacebook = (req, res, next) => {
   });
 };
 
-/**
+/*
  * GET /api/scraping
  * Web scraping example using Cheerio library.
 
@@ -115,7 +116,7 @@ exports.getScraping = (req, res, next) => {
   });
 };
 
-/**
+/*
  * GET /api/github
  * GitHub API Example.
 
@@ -130,7 +131,7 @@ exports.getGithub = (req, res, next) => {
   });
 };
 
-/**
+/*
  * GET /api/aviary
  * Aviary image processing example.
 
@@ -140,7 +141,7 @@ exports.getAviary = (req, res) => {
   });
 };
 
-/**
+/*
  * GET /api/nyt
  * New York Times API example.
 
@@ -162,7 +163,7 @@ exports.getNewYorkTimes = (req, res, next) => {
   });
 };
 
-/**
+/*
  * GET /api/lastfm
  * Last.fm API example.
 
@@ -230,7 +231,7 @@ exports.getLastfm = (req, res, next) => {
 };
 */
 
-/**
+/*
  * GET /api/twitter
  * Twitter API example.
 
@@ -251,7 +252,7 @@ exports.getTwitter = (req, res, next) => {
   });
 };
 
-/**
+/*
  * POST /api/twitter
  * Post a tweet.
 
@@ -279,7 +280,7 @@ exports.postTwitter = (req, res, next) => {
   });
 };
 
-/**
+/*
  * GET /api/steam
  * Steam API example.
 
@@ -333,7 +334,7 @@ exports.getSteam = (req, res, next) => {
   .catch(next);
 };
 
-/**
+/*
  * GET /api/stripe
  * Stripe API example.
 
@@ -344,7 +345,7 @@ exports.getStripe = (req, res) => {
   });
 };
 
-/**
+/*
  * POST /api/stripe
  * Make a payment.
 
@@ -366,7 +367,7 @@ exports.postStripe = (req, res) => {
   });
 };
 
-/**
+/*
  * GET /api/twilio
  * Twilio API example.
 
@@ -376,7 +377,7 @@ exports.getTwilio = (req, res) => {
   });
 };
 
-/**
+/*
  * POST /api/twilio
  * Send a text message using Twilio.
 
@@ -403,7 +404,7 @@ exports.postTwilio = (req, res, next) => {
   });
 };
 
-/**
+/*
  * GET /api/clockwork
  * Clockwork SMS API example.
 
@@ -413,7 +414,7 @@ exports.getClockwork = (req, res) => {
   });
 };
 
-/**
+/*
  * POST /api/clockwork
  * Send a text message using Clockwork SMS
 
@@ -430,7 +431,7 @@ exports.postClockwork = (req, res, next) => {
   });
 };
 
-/**
+/*
  * GET /api/linkedin
  * LinkedIn API example.
 
@@ -446,7 +447,7 @@ exports.getLinkedin = (req, res, next) => {
   });
 };
 
-/**
+/*
  * GET /api/instagram
  * Instagram API example.
 
@@ -472,7 +473,7 @@ exports.getInstagram = (req, res, next) => {
   .catch(next);
 };
 
-/**
+/*
  * GET /api/paypal
  * PayPal SDK example.
 
@@ -515,7 +516,7 @@ exports.getPayPal = (req, res, next) => {
   });
 };
 
-/**
+/*
  * GET /api/paypal/success
  * PayPal SDK example.
 
@@ -530,7 +531,7 @@ exports.getPayPalSuccess = (req, res) => {
   });
 };
 
-/**
+/*
  * GET /api/paypal/cancel
  * PayPal SDK example.
 
@@ -542,7 +543,7 @@ exports.getPayPalCancel = (req, res) => {
   });
 };
 
-/**
+/*
  * GET /api/lob
  * Lob API example.
 
@@ -556,7 +557,7 @@ exports.getLob = (req, res, next) => {
   });
 };
 
-/**
+/*
  * GET /api/upload
  * File Upload API example.
  */
@@ -572,7 +573,7 @@ exports.postFileUpload = (req, res) => {
   res.redirect('/api/upload');
 };
 
-/**
+/*
  * GET /api/pinterest
  * Pinterest API example.
 
@@ -587,7 +588,7 @@ exports.getPinterest = (req, res, next) => {
   });
 };
 
-/**
+/*
  * POST /api/pinterest
  * Create a pin.
 
