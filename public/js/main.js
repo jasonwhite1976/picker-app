@@ -1,5 +1,9 @@
 $(document).ready(function() {
   $("#delete-btn").click(function() {
-     alert("Are you sure");
+      if(confirm("Are you sure?")) {
+        document.forms[0].submit();
+      } else {
+        return false;
+      }
     });
-   });
+});
