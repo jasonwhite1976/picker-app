@@ -1,5 +1,9 @@
 $(document).ready(function() {
 
-  // Place JavaScript code here...
+
+    $("#delete-btn").click(function() {
+     alert("Are you sure");
+    });
+   });
 
 });
