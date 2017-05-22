@@ -587,7 +587,7 @@ exports.getPinterest = (req, res, next) => {
     });
   });
 };
-
+*/
 /*
  * POST /api/pinterest
  * Create a pin.
