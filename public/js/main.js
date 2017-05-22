@@ -1,6 +1,6 @@
 $(document).ready(function() {
-    $("#delete-btn").submit(function() {
-        var c = confirm("Click OK to continue");
-        return c;
+    $("#delete-btn").click(function(event) {
+        if( !confirm('Are you sure?') )
+            event.preventDefault();
     });
 });
