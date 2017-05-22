@@ -4,7 +4,7 @@ const bluebird = require('bluebird');
 const request = bluebird.promisifyAll(require('request'), { multiArgs: true });
 const cheerio = require('cheerio');
 const graph = require('fbgraph');
-const LastFmNode = require('lastfm').LastFmNode;
+// const LastFmNode = require('lastfm').LastFmNode;
 const tumblr = require('tumblr.js');
 const GitHub = require('github');
 const Twit = require('twit');
@@ -165,7 +165,7 @@ exports.getNewYorkTimes = (req, res, next) => {
 /**
  * GET /api/lastfm
  * Last.fm API example.
- */
+
 exports.getLastfm = (req, res, next) => {
   const lastfm = new LastFmNode({
     api_key: process.env.LASTFM_KEY,
@@ -228,6 +228,7 @@ exports.getLastfm = (req, res, next) => {
   })
   .catch(next);
 };
+*/
 
 /**
  * GET /api/twitter
