@@ -1,0 +1,8 @@
+extends ../layout
+
+block content
+  .page-header
+    h3 Edit a List
+
+  each list in user.list
+    p List: #{list.name}

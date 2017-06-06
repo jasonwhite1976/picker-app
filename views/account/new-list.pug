@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+  .page-header
+    h3 Make a New List
+  .row
+    form.form-horizontal(action='/account/new-list', method='POST')
+      input(type='hidden', name='_csrf', value=_csrf)
+      .form-group
+        label.col-sm-3.control-label(for='new-list') New List Name
+        .col-sm-7
+          input.form-control(type='text', name='name', id='name')
+      .form-group
+        .col-sm-offset-3.col-sm-4
+          button.btn.btn.btn-primary(type='submit')
+            i.fa.fa-pencil
+            | Make List
+  each list in user.list
+      .row
+        .col-sm-offset-3.col-sm-9
+            p #{list.name}&nbsp;
+               a(href="/account/list/" + list.listId) edit
+               |&nbsp;|&nbsp;
+               a(href="/account/list/" + list.listId) delete

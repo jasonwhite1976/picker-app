@@ -136,6 +136,17 @@ app.post('/account/password', passportConfig.isAuthenticated, userController.pos
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 
+app.get('/account/new-list', userController.getNewList);
+app.post('/account/new-list', userController.postNewList);
+
+app.get('/account/edit-list', userController.getEditList);
+//app.post('/account/edit-list', userController.getEditList);
+
+
+app.get('/account/list/:list', userController.getListURL);
+
+//app.post('/account/list/:listid', userController.postList);
+
 app.get('/about', aboutController.getAbout);
 
 /**

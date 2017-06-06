@@ -5,6 +5,85 @@ const mg = require('nodemailer-mailgun-transport');
 const auth =  require('../auth.json');
 const passport = require('passport');
 const User = require('../models/User');
+const List = require('../models/List');
+
+
+/**
+ * GET /new-list
+ *
+ */
+exports.getNewList = (req, res) => {
+  if (req.user) {
+    res.render('account/new-list', {
+      title: 'Make a New List'
+    });
+  } else {
+    return res.redirect('/');
+  }
+};
+
+/**
+ * POST /new-list
+ *
+ */
+exports.postNewList = (req, res, next) => {
+  req.assert('name', 'New list name must be at least 3 characters long').len(3);
+  req.sanitize('name');
+
+  const errors = req.validationErrors();
+  if (errors) {
+    req.flash('errors', errors);
+    return res.redirect('/account/new-list');
+  }
+
+  User.findById(req.user.id, (err, user) => {
+    if (err) { return next(err); }
+    var userListLength = user.list.length;
+    var listName = {
+      "listId"      : req.user.id + "_" + userListLength,
+      "name"        : req.body.name,
+      "list_number" : userListLength,
+      "items"       : []
+    };
+    user.list.push(listName);
+    user.save((err) => {
+        if (err) { return next(err); }
+        req.flash('success', { msg: listName.name +' created.' });
+        res.redirect('/account/new-list');
+      });
+  });
+};
+
+exports.getListURL = (req, res, next) => {
+  User.findById(req.user.id, (err, user) => {
+    if (err) { return next(err); }
+    var URL = req.params.list;
+    var listArray = user.list
+    var userListLength = user.list.length;
+    console.log(userListLength);
+    for (var a = 0; a < userListLength; a++){
+      if(URL == user.list[a].listId) {
+        res.render('account/show-list', {
+          title: user.list[a].name,
+          listName: user.list[a].name,
+          listId: user.list[a].listId,
+          listNumber: user.list[a].list_number,
+          listItems: user.list[a].items
+        });
+      }
+    }
+  });
+};
+
+exports.getEditList = (req, res) => {
+  if (req.user) {
+    res.render('account/edit-list', {
+      title: 'Edit a List'
+    });
+  } else {
+    return res.redirect('/');
+  }
+};
 
 /**
  * GET /login
@@ -119,7 +198,7 @@ exports.postSignup = (req, res, next) => {
       };
       return transporter.sendMail(mailOptions)
         .then(() => {
-          //req.flash('success', { msg: 'Signup Success! Welcome to Furnace1.' });
+          req.flash('success', { msg: 'Signup Success! Welcome to Furnace1.' });
         });
     });
   });
