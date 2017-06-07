@@ -8,3 +8,12 @@ block content
   p List Id: #{listId}
   p List number: #{listNumber}
   p List items: #{listItems}
+
+  .row
+    .col-sm-offset-3.col-sm-9
+      form.form-horizontal(action='/account/list/delete', method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)
+        .form-group
+         input(type='hidden', name='name' value=listName)
+         button.btn.btn.btn-danger.delete-list-link(type='submit')
+           | Delete List

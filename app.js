@@ -145,6 +145,8 @@ app.get('/account/edit-list', userController.getEditList);
 
 app.get('/account/list/:list', userController.getListURL);
 
+app.post('/account/list/delete', userController.postDeleteList);
+
 //app.post('/account/list/:listid', userController.postList);
 
 app.get('/about', aboutController.getAbout);

@@ -7,7 +7,6 @@ const passport = require('passport');
 const User = require('../models/User');
 const List = require('../models/List');
 
-
 /**
  * GET /new-list
  *
@@ -57,12 +56,12 @@ exports.postNewList = (req, res, next) => {
 exports.getListURL = (req, res, next) => {
   User.findById(req.user.id, (err, user) => {
     if (err) { return next(err); }
-    var URL = req.params.list;
+    var listURL = req.params.list;
     var listArray = user.list
     var userListLength = user.list.length;
     console.log(userListLength);
     for (var a = 0; a < userListLength; a++){
-      if(URL == user.list[a].listId) {
+      if(listURL == user.list[a].listId) {
         res.render('account/show-list', {
           title: user.list[a].name,
           listName: user.list[a].name,
@@ -84,6 +83,30 @@ exports.getEditList = (req, res) => {
     return res.redirect('/');
   }
 };
+
+/**
+ * POST /account/list/delete
+ * Delete user list. - find list from list name and delete/remove/drop...
+ */
+exports.postDeleteList = (req, res, next) => {
+  var rBody = req.body.name;
+  console.log(rBody);
+  User.update({ _id: req.user.id },
+    { $pull: { list: { name: rBody } } }, (err) => {
+    if (err) { return next(err); }
+    req.flash('success', { msg: 'List ' + rBody + ' has been deleted.' });
+    res.redirect('/account/new-list');
+  });
+};
+
+/*
+User.remove({ _id: req.user.id }, (err) => {
+  if (err) { return next(err); }
+  req.logout();
+  req.flash('info', { msg: 'Your account has been deleted.' });
+  res.redirect('/');
+});
+*/
 
 /**
  * GET /login
