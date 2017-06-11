@@ -86,7 +86,7 @@ exports.postItemToList = (req, res, next) => {
             }
         }, (err) => {
      if (err) { return next(err); }
-     req.flash('success', { msg: 'Item added.' });
+     //req.flash('success', { msg: 'Item added.' });
      res.redirect('/account/list/' + listURL);
   });
 

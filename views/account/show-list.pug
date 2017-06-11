@@ -21,13 +21,14 @@ block content
             i.fa.fa-pencil
             | Add item
 
-    .col-sm-offset-2.col-sm-10
+    .col-xs-offset-2.col-xs-4
+      h4.margin-bottom-24 #{title}
       each item in listItems
-        p.pull-left #{item.name}
+        p.pick-toggle.pull-left.green-text.not-got-it #{item.name}
         form.form-horizontal(action="/account/list/deleteitem/" + listId, method='POST')
           input(type='hidden', name='_csrf', value=_csrf)
           .form-group
             col-sm-4
              input(type='hidden', name='name' value=item.timeStampId)
-             button.btn.btn-to-link(type='submit')
+             button.btn.btn-to-link.pull-right(type='submit')
                | Delete Item

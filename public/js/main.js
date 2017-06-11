@@ -8,4 +8,8 @@ $(document).ready(function() {
         if( !confirm('Are you sure?') )
             event.preventDefault();
     });
+
+    $(".pick-toggle").click(function(event) {
+      $(this).toggleClass( "not-got-it" );
+    });
 });
