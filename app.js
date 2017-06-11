@@ -19,6 +19,7 @@ const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
+const moment = require('moment');
 
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
@@ -142,12 +143,12 @@ app.post('/account/new-list', userController.postNewList);
 app.get('/account/edit-list', userController.getEditList);
 //app.post('/account/edit-list', userController.getEditList);
 
-
 app.get('/account/list/:list', userController.getListURL);
 
-app.post('/account/list/delete', userController.postDeleteList);
+app.post('/account/list/additem/:list', userController.postItemToList);
+app.post('/account/list/deleteitem/:list', userController.deleteItemFromList);
 
-//app.post('/account/list/:listid', userController.postList);
+app.post('/account/list/delete', userController.postDeleteList);
 
 app.get('/about', aboutController.getAbout);
 

@@ -68,3 +68,26 @@ textarea {
 .fa {
   margin-right: 6px;
 }
+
+.margin-r-10 {
+  margin-right: 10px;
+}
+
+.btn-to-link {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin: 0 0 10px 8px;
+  color: #4d90fc;
+  box-shadow: none;
+}
+
+.btn-to-link:focus,
+.btn-to-link:active,
+.btn-to-link:active:focus,
+.btn-to-link:hover {
+  color: #4d90fc;
+  text-decoration: underline;
+  outline: none;
+  box-shadow: none;
+}

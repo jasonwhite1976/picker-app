@@ -3,6 +3,7 @@ extends ../layout
 block content
   .page-header
     h3 Make a New List
+    p new-list.pug
   .row
     form.form-horizontal(action='/account/new-list', method='POST')
       input(type='hidden', name='_csrf', value=_csrf)
@@ -18,14 +19,13 @@ block content
   each list in user.list
       .row
         .col-sm-offset-3.col-sm-9
-          p List: #{list.name}
+          p.pull-left List: #{list.name}
           a(href="/account/list/" + list.listId)
-            button.btn.btn.btn-success.pull-left.margin-r-10(type='submit')
-              i.fa.fa-pencil
+            button.btn.btn-to-link.pull-left.margin-r-10(type='submit')
               | Edit List
           form.form-horizontal(action='/account/list/delete', method='POST')
             input(type='hidden', name='_csrf', value=_csrf)
             .form-group
              input(type='hidden', name='name' value=list.name)
-             button.btn.btn.btn-danger.delete-list-link(type='submit')
+             button.btn.btn-to-link.delete-list-link(type='submit')
                | Delete List

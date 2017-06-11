@@ -1,3 +1,6 @@
+// routes - categories
+
+
 const bluebird = require('bluebird');
 const crypto = bluebird.promisifyAll(require('crypto'));
 const nodemailer = require('nodemailer');
@@ -5,7 +8,6 @@ const mg = require('nodemailer-mailgun-transport');
 const auth =  require('../auth.json');
 const passport = require('passport');
 const User = require('../models/User');
-const List = require('../models/List');
 
 /**
  * GET /new-list
@@ -29,6 +31,8 @@ exports.postNewList = (req, res, next) => {
   req.assert('name', 'New list name must be at least 3 characters long').len(3);
   req.sanitize('name');
 
+  var theDateNow = Date.now();
+
   const errors = req.validationErrors();
   if (errors) {
     req.flash('errors', errors);
@@ -39,8 +43,10 @@ exports.postNewList = (req, res, next) => {
     if (err) { return next(err); }
     var userListLength = user.list.length;
     var listName = {
-      "listId"      : req.user.id + "_" + userListLength,
+      "listId"      : req.user.id + "_" + theDateNow,
       "name"        : req.body.name,
+      "created_on"  : theDateNow,
+      "created_by"  : user.profile.name || user.email,
       "list_number" : userListLength,
       "items"       : []
     };
@@ -53,18 +59,83 @@ exports.postNewList = (req, res, next) => {
   });
 };
 
+/**
+ * POST /add-item-to-list
+ *
+ */
+exports.postItemToList = (req, res, next) => {
+  req.sanitize('itemName');
+
+  const errors = req.validationErrors();
+  if (errors) { req.flash('errors', errors); }
+
+  var itemName = req.body.itemName;
+
+  var listURL = req.originalUrl;
+  listURL = listURL.split('/');
+  listURL = listURL[listURL.length-1];
+
+  User.update(
+     { _id: req.user.id, "list.listId": listURL },
+        { $push:
+            { 'list.$.items':
+              {
+                name: itemName,
+                timeStampId: Date.now()
+              }
+            }
+        }, (err) => {
+     if (err) { return next(err); }
+     req.flash('success', { msg: 'Item added.' });
+     res.redirect('/account/list/' + listURL);
+  });
+
+}
+
+/**
+ * POST /delete-item-from-list
+ *
+ */
+exports.deleteItemFromList = (req, res, next) => {
+  // req.sanitize('itemName');
+  const errors = req.validationErrors();
+  if (errors) { req.flash('errors', errors); }
+
+  var itemId = parseInt(req.body.name);
+
+  var listURL = req.originalUrl;
+  listURL = listURL.split('/');
+  listURL = listURL[listURL.length-1];
+
+  User.update(
+     { _id: req.user.id, "list.listId": listURL },
+        { $pull:
+            { 'list.$.items':
+              {
+                timeStampId: itemId
+              }
+            }
+        }, (err) => {
+     if (err) { return next(err); }
+     // req.flash('success', { msg: 'Item removed.' });
+     res.redirect('/account/list/' + listURL);
+  });
+}
+
 exports.getListURL = (req, res, next) => {
   User.findById(req.user.id, (err, user) => {
     if (err) { return next(err); }
     var listURL = req.params.list;
     var listArray = user.list
     var userListLength = user.list.length;
-    console.log(userListLength);
-    for (var a = 0; a < userListLength; a++){
+    //console.log(userListLength);
+    for (var a = 0; a < userListLength; a++) {
       if(listURL == user.list[a].listId) {
         res.render('account/show-list', {
           title: user.list[a].name,
           listName: user.list[a].name,
+          createdBy: user.list[a].created_by,
+          createdOn: user.list[a].created_on,
           listId: user.list[a].listId,
           listNumber: user.list[a].list_number,
           listItems: user.list[a].items
@@ -90,23 +161,14 @@ exports.getEditList = (req, res) => {
  */
 exports.postDeleteList = (req, res, next) => {
   var rBody = req.body.name;
-  console.log(rBody);
-  User.update({ _id: req.user.id },
+  User.update(
+    { _id: req.user.id },
     { $pull: { list: { name: rBody } } }, (err) => {
     if (err) { return next(err); }
     req.flash('success', { msg: 'List ' + rBody + ' has been deleted.' });
     res.redirect('/account/new-list');
   });
 };
-
-/*
-User.remove({ _id: req.user.id }, (err) => {
-  if (err) { return next(err); }
-  req.logout();
-  req.flash('info', { msg: 'Your account has been deleted.' });
-  res.redirect('/');
-});
-*/
 
 /**
  * GET /login
@@ -208,7 +270,7 @@ exports.postSignup = (req, res, next) => {
           return next(err);
         }
       });
-      req.flash('success', { msg: 'Signup Success! Welcome to Furnace1.' });
+      req.flash('success', { msg: 'Signup Success! Welcome to Picker.' });
       res.redirect('/');
 
       var transporter = nodemailer.createTransport(mg(auth));
@@ -221,7 +283,7 @@ exports.postSignup = (req, res, next) => {
       };
       return transporter.sendMail(mailOptions)
         .then(() => {
-          req.flash('success', { msg: 'Signup Success! Welcome to Furnace1.' });
+          req.flash('success', { msg: 'Signup Success! Welcome to Picker.' });
         });
     });
   });

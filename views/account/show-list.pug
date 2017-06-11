@@ -3,17 +3,31 @@ extends ../layout
 block content
   .page-header
     h3 List: #{title}
-
-  p List name: #{listName}
-  p List Id: #{listId}
-  p List number: #{listNumber}
-  p List items: #{listItems}
+    p show-list.pug
 
   .row
-    .col-sm-offset-3.col-sm-9
-      form.form-horizontal(action='/account/list/delete', method='POST')
-        input(type='hidden', name='_csrf', value=_csrf)
-        .form-group
-         input(type='hidden', name='name' value=listName)
-         button.btn.btn.btn-danger.delete-list-link(type='submit')
-           | Delete List
+    //p List name: #{listName}
+    //p List Id: #{listId}
+    //p List number: #{listNumber}
+    form.form-horizontal(action="/account/list/additem/" + listId, method='POST')
+      input(type='hidden', name='_csrf', value=_csrf)
+      .form-group
+        label.col-sm-2.control-label(for='add-item') Add item
+        .col-sm-8
+          input.form-control(type='text', name='itemName', id='itemName')
+      .form-group
+        .col-sm-offset-2.col-sm-4
+          button.btn.btn.btn-primary(type='submit')
+            i.fa.fa-pencil
+            | Add item
+
+    .col-sm-offset-2.col-sm-10
+      each item in listItems
+        p.pull-left #{item.name}
+        form.form-horizontal(action="/account/list/deleteitem/" + listId, method='POST')
+          input(type='hidden', name='_csrf', value=_csrf)
+          .form-group
+            col-sm-4
+             input(type='hidden', name='name' value=item.timeStampId)
+             button.btn.btn-to-link(type='submit')
+               | Delete Item
