@@ -16,16 +16,16 @@ block content
           button.btn.btn.btn-primary(type='submit')
             i.fa.fa-pencil
             | Make List
-  each list in user.list
+  each list in lists
       .row
         .col-sm-offset-3.col-sm-9
-          p.pull-left List: #{list.name}
+          p.pull-left List: #{list.listName}
           a(href="/account/list/" + list.listId)
             button.btn.btn-to-link.pull-left.margin-r-10(type='submit')
               | Edit List
           form.form-horizontal(action='/account/list/delete', method='POST')
             input(type='hidden', name='_csrf', value=_csrf)
             .form-group
-             input(type='hidden', name='name' value=list.name)
+             input(type='hidden', name='name' value=list.listName)
              button.btn.btn-to-link.delete-list-link(type='submit')
                | Delete List

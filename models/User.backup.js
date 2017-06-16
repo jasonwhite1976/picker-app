@@ -7,7 +7,9 @@ const userSchema = new mongoose.Schema({
   password: String,
   passwordResetToken: String,
   passwordResetExpires: Date,
+
   tokens: Array,
+
   profile: {
     name: String,
     gender: String,
@@ -15,10 +17,8 @@ const userSchema = new mongoose.Schema({
     website: String,
     picture: String
   },
-  list: [{ type: mongoose.Schema.Types.ObjectId, ref: 'List' }]
+  list: Array
 }, { timestamps: true } );
-
-/* item quantity */
 
 /**
  * Password hash middleware.
@@ -59,26 +59,6 @@ userSchema.methods.gravatar = function gravatar(size) {
   return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
 
-
-/*
-var aaron = new User({ _id: req.id, name: 'Aaron', age: 100 });
-
-aaron.save(function (err) {
-  if (err) return handleError(err);
-
-  var story1 = new Story({
-    title: "Once upon a timex.",
-    _creator: aaron._id    // assign the _id from the person
-  });
-
-  story1.save(function (err) {
-    if (err) return handleError(err);
-    // thats it!
-  });
-});
-*/
-
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
-//module.exports = List;

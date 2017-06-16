@@ -26,17 +26,7 @@ block content
       .col-md-offset-2.col-md-4.col-xs-12
         h4.margin-bottom-24 #{title}
         each item in listItems
-          // p.pick-toggle.pull-left.green-text.not-got-it #{item.name}
-          form.pull-left.form-horizontal.updateItemForm(method='POST')
-            input(type='hidden', name='_csrf', value=_csrf)
-            .form-group
-              col-sm-4
-               input(type='hidden', class='name' name=item.name value=item.name)
-               input(type='hidden', class='timeStampId' name='timeStampId' value=item.timeStampId)
-               input(type='hidden', class='isPickedInput' name='isPickedInput' value="0")
-               button.updateItemLinks.btn.btn-to-link.pull-right.pick-toggle.pull-left.green-text.not-got-it(type='submit')
-                 | #{item.name}
-
+          p.pick-toggle.pull-left.green-text.not-got-it #{item.name}
           form.form-horizontal(action="/account/list/deleteitem/" + listId, method='POST')
             input(type='hidden', name='_csrf', value=_csrf)
             .form-group

@@ -1,4 +1,5 @@
 // routes - categories
+
 const bluebird = require('bluebird');
 const crypto = bluebird.promisifyAll(require('crypto'));
 const nodemailer = require('nodemailer');
@@ -6,36 +7,31 @@ const mg = require('nodemailer-mailgun-transport');
 const auth =  require('../auth.json');
 const passport = require('passport');
 const User = require('../models/User');
-const List = require('../models/List');
 
 /**
  * GET /new-list
+ *
  */
 exports.getNewList = (req, res) => {
-
-  // Get the users lists
-  List
-  .find({ user: req.user.id })
-  .exec(function (err, lists) {
-    if (err) return handleError(err);
-    if (req.user) {
-      res.render('account/new-list', {
-        title: 'Make a New List',
-        lists: lists
-      });
-    } else {
-      return res.redirect('/');
-    }
-  });
-
+  if (req.user) {
+    res.render('account/new-list', {
+      title: 'Make a New List'
+    });
+  } else {
+    return res.redirect('/');
+  }
 };
 
 /**
  * POST /new-list
+ *
  */
 exports.postNewList = (req, res, next) => {
   req.assert('name', 'New list name must be at least 3 characters long').len(3);
   req.sanitize('name');
+
+  var theDateNow = Date.now();
+
   const errors = req.validationErrors();
   if (errors) {
     req.flash('errors', errors);
@@ -44,24 +40,31 @@ exports.postNewList = (req, res, next) => {
 
   User.findById(req.user.id, (err, user) => {
     if (err) { return next(err); }
-    var list = new List({
-      user: req.user.id,
-      listName : req.body.name
-    });
-
-    list.save((err) => {
-      if (err) { return next(err); }
-      req.flash('success', { msg: req.body.name + ' created' });
-      res.redirect('/account/new-list');
-    });
+    var userListLength = user.list.length;
+    var listName = {
+      "listId"      : req.user.id + "_" + theDateNow,
+      "name"        : req.body.name,
+      "created_on"  : theDateNow,
+      "created_by"  : user.profile.name || user.email,
+      "list_number" : userListLength,
+      "items"       : []
+    };
+    user.list.push(listName);
+    user.save((err) => {
+        if (err) { return next(err); }
+        req.flash('success', { msg: listName.name +' created.' });
+        res.redirect('/account/new-list');
+      });
   });
-}
+};
 
 /**
  * POST /add-item-to-list
+ *
  */
 exports.postItemToList = (req, res, next) => {
   req.sanitize('itemName');
+
   const errors = req.validationErrors();
   if (errors) { req.flash('errors', errors); }
 
@@ -72,12 +75,36 @@ exports.postItemToList = (req, res, next) => {
   listURL = listURL.split('/');
   listURL = listURL[listURL.length-1];
 
+  User.update(
+     { _id: req.user.id, "list.listId": listURL },
+        { $push:
+            { 'list.$.items':
+              {
+                name: itemName,
+                picked: isItemPicked,
+                timeStampId: Date.now()
+              }
+            }
+        }, (err) => {
+     if (err) { return next(err); }
+     //req.flash('success', { msg: 'Item added.' });
+     //res.redirect('/account/list/' + listURL);
+     res.contentType('json');
+     res.send(JSON.stringify({
+     			name: req.body.name || null,
+     }));
+     console.log('req.body.itemName ' + req.body.name);
+  });
+
 }
-/**** shell ****/
+
 exports.updateItem = (req, res, next) => {
+    const errors = req.validationErrors();
+    if (errors) { req.flash('errors', errors); }
+
     var itemName = req.body.name;
     var isPicked = req.body.picked;
-    var timeId   = req.body.timeStampId;
+    var timeId = req.body.timeStampId;
 
     var listURL = req.originalUrl;
     listURL = listURL.split('/');
@@ -87,10 +114,34 @@ exports.updateItem = (req, res, next) => {
     console.log('isPicked = ' + isPicked);
     console.log('timeId = ' + timeId);
 
-  }
+    // find the array postion somehow??
+
+    var testVar = 0;
+
+    User.update (
+      {
+        _id: req.user.id,
+        "list.listId": listURL
+      },
+      {
+        $set: {
+          'list.$.items.0.picked': isPicked
+        }
+      }, (err) => {
+       if (err) { return next(err); }
+       //req.flash('success', { msg: 'Item added.' });
+       res.redirect('/account/list/' + listURL);
+       /*res.contentType('json');
+       res.send(JSON.stringify({
+            //name: req.body.name || null,
+       }));
+       console.log('req.body.itemName ' + req.body.name);*/
+    });
+};
 
 /**
- * POST /delete-item-from-list *
+ * POST /delete-item-from-list
+ *
  */
 exports.deleteItemFromList = (req, res, next) => {
   // req.sanitize('itemName');
@@ -103,6 +154,19 @@ exports.deleteItemFromList = (req, res, next) => {
   listURL = listURL.split('/');
   listURL = listURL[listURL.length-1];
 
+  User.update(
+     { _id: req.user.id, "list.listId": listURL },
+        { $pull:
+            { 'list.$.items':
+              {
+                timeStampId: itemId
+              }
+            }
+        }, (err) => {
+     if (err) { return next(err); }
+     // req.flash('success', { msg: 'Item removed.' });
+     res.redirect('/account/list/' + listURL);
+  });
 }
 
 exports.getListURL = (req, res, next) => {
@@ -139,11 +203,10 @@ exports.getEditList = (req, res) => {
 
 /**
  * POST /account/list/delete
+ *
  */
 exports.postDeleteList = (req, res, next) => {
   var rBody = req.body.name;
-
-/*
   User.update(
     { _id: req.user.id },
     { $pull: { list: { name: rBody } } }, (err) => {
@@ -151,12 +214,11 @@ exports.postDeleteList = (req, res, next) => {
     req.flash('success', { msg: 'List ' + rBody + ' has been deleted.' });
     res.redirect('/account/new-list');
   });
-
-  */
 };
 
 /**
  * GET /login
+ * Login page.
  */
 exports.getLogin = (req, res) => {
   if (req.user) {
@@ -169,6 +231,7 @@ exports.getLogin = (req, res) => {
 
 /**
  * POST /login
+ * Sign in using email and password.
  */
 exports.postLogin = (req, res, next) => {
   req.assert('email', 'Email is not valid').isEmail();
@@ -198,6 +261,7 @@ exports.postLogin = (req, res, next) => {
 
 /**
  * GET /logout
+ * Log out.
  */
 exports.logout = (req, res) => {
   req.logout();
@@ -206,6 +270,7 @@ exports.logout = (req, res) => {
 
 /**
  * GET /signup
+ * Signup page.
  */
 exports.getSignup = (req, res) => {
   if (req.user) {
@@ -218,6 +283,7 @@ exports.getSignup = (req, res) => {
 
 /**
  * POST /signup
+ * Create a new local account.
  */
 exports.postSignup = (req, res, next) => {
   req.assert('email', 'Email is not valid').isEmail();
@@ -271,6 +337,7 @@ exports.postSignup = (req, res, next) => {
 
 /**
  * GET /account
+ * Profile page.
  */
 exports.getAccount = (req, res) => {
   res.render('account/profile', {
@@ -280,6 +347,7 @@ exports.getAccount = (req, res) => {
 
 /**
  * POST /account/profile
+ * Update profile information.
  */
 exports.postUpdateProfile = (req, res, next) => {
   req.assert('email', 'Please enter a valid email address.').isEmail();
