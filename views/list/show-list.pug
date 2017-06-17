@@ -1,0 +1,41 @@
+extends ../layout
+
+block content
+  .page-header
+    h3 List: #{title}
+    p show-list.pug
+
+  .row
+    .col-sm-12
+      form.form-horizontal#addItemForm(method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)
+        .form-group
+          label.col-sm-2.control-label(for='add-item') Add item
+          .col-sm-8
+            input.form-control(type='text', name='itemName', id='itemName')
+        .form-group
+          .col-sm-offset-2.col-sm-4
+            button#addItemButton.btn.btn.btn-primary(type='submit')
+              i.fa.fa-pencil
+              | Add item
+
+    .col-md-offset-2.col-md-4.col-xs-12
+      h4.margin-bottom-24 #{title}
+      each item in listItems
+        form.pull-left.form-horizontal.updateItemForm(method='POST')
+          input(type='hidden', name='_csrf', value=_csrf)
+          .form-group
+            col-sm-4
+             input(type='hidden', class='name' name=item.name value=item.name)
+             input(type='hidden', class='createdOn' name='createdOn' value=item.createdOn)
+             input(type='hidden', class='isPickedInput' name='isPickedInput' value="0")
+             button.updateItemLinks.btn.btn-to-link.pull-right.pick-toggle.pull-left.green-text.not-got-it(type='submit')
+               | #{item.name}
+
+        form.form-horizontal.deleteItemForm(method='POST')
+          input(type='hidden', name='_csrf', value=_csrf)
+          .form-group
+            col-sm-4
+             input(type='hidden', class='name' name=item.name value=item.createdOn)
+             button.btn.btn-to-link.pull-right(type='submit')
+               | Delete Item

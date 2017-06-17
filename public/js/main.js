@@ -9,8 +9,9 @@ $(document).ready(function() {
           event.preventDefault();
   });
 
-  $('#addItemButton').click(addItemSubmit);
+  /*******************************************************/
 
+  $('#addItemButton').click(addItemSubmit);
   function addItemSubmit (event) {
 
       event.preventDefault();
@@ -22,7 +23,7 @@ $(document).ready(function() {
       var newItem = addItemForm.itemName.value;
 
       $.ajax({
-        url: '/account/list/additem/' + listURL,
+        url: '/list/additem/' + listURL,
         type: 'POST',
         dataType: "json",
         contentType: 'application/json',
@@ -30,11 +31,40 @@ $(document).ready(function() {
           name: newItem
         }),
         success: function() {
-          //$("#log").html( newItem );
           location.reload();
         }
       });
     }
+
+    /*******************************************************/
+
+      $('.deleteItemForm').click(deleteItemForm);
+      function deleteItemForm (event) {
+          event.preventDefault();
+          event.stopPropagation();
+
+          var listURL = window.location.href.split("/").pop();
+          console.log('listURL = ' + listURL);
+
+          var timeStamp = $(this).find('.name').val();
+
+          console.log('itemName ' + timeStamp);
+
+          $.ajax({
+            url: '/list/deleteitem/' + listURL,
+            type: 'POST',
+            dataType: "json",
+            contentType: 'application/json',
+            data: JSON.stringify ({
+              createdOn: timeStamp
+            }),
+            success: function() {
+              location.reload();
+            }
+          });
+        }
+
+    /*******************************************************/
 
     $(".pick-toggle").click(function(event) {
       $(this).toggleClass( "not-got-it" );
@@ -44,9 +74,7 @@ $(document).ready(function() {
     });
 
     $('.updateItemForm').click(updateItemForm);
-
     function updateItemForm (event) {
-
         event.preventDefault();
         event.stopPropagation();
 
@@ -66,7 +94,7 @@ $(document).ready(function() {
         console.log('timeId = ' + timeId);
 
         $.ajax({
-          url: '/account/list/itempicked/' + listURL,
+          url: '/list/itempicked/' + listURL,
           type: 'POST',
           dataType: "json",
           contentType: 'application/json',

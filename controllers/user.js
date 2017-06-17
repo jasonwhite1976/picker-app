@@ -12,14 +12,13 @@ const List = require('../models/List');
  * GET /new-list
  */
 exports.getNewList = (req, res) => {
-
   // Get the users lists
   List
   .find({ user: req.user.id })
   .exec(function (err, lists) {
     if (err) return handleError(err);
     if (req.user) {
-      res.render('account/new-list', {
+      res.render('list/new-list', {
         title: 'Make a New List',
         lists: lists
       });
@@ -27,7 +26,6 @@ exports.getNewList = (req, res) => {
       return res.redirect('/');
     }
   });
-
 };
 
 /**
@@ -39,20 +37,18 @@ exports.postNewList = (req, res, next) => {
   const errors = req.validationErrors();
   if (errors) {
     req.flash('errors', errors);
-    return res.redirect('/account/new-list');
+    return res.redirect('/list/new-list');
   }
-
   User.findById(req.user.id, (err, user) => {
     if (err) { return next(err); }
     var list = new List({
       user: req.user.id,
       listName : req.body.name
     });
-
     list.save((err) => {
       if (err) { return next(err); }
       req.flash('success', { msg: req.body.name + ' created' });
-      res.redirect('/account/new-list');
+      res.redirect('/list/new-list');
     });
   });
 }
@@ -61,9 +57,12 @@ exports.postNewList = (req, res, next) => {
  * POST /add-item-to-list
  */
 exports.postItemToList = (req, res, next) => {
+  req.assert('name', 'New item name must be at least 3 characters long').len(3);
   req.sanitize('itemName');
   const errors = req.validationErrors();
   if (errors) { req.flash('errors', errors); }
+
+  var theDateNow = Date.now();
 
   var itemName = req.body.name;
   var isItemPicked = 0;
@@ -72,7 +71,29 @@ exports.postItemToList = (req, res, next) => {
   listURL = listURL.split('/');
   listURL = listURL[listURL.length-1];
 
+  List.findById(listURL, (err, list) => {
+    if (err) { return next(err); }
+    var itemsLength = list.items.length;
+    var itemName = {
+      "itemId"     : listURL + "_" + theDateNow,
+      "name"       : req.body.name,
+      "createdOn"  : theDateNow,
+      "listNumber" : itemsLength,
+      "isPicked"   : isItemPicked
+    };
+    list.items.push(itemName);
+    list.save((err) => {
+        if (err) { return next(err); }
+        //res.redirect('/list/' + listURL);
+        res.contentType('json');
+        res.send(JSON.stringify({
+        			name: req.body.name || null,
+        }));
+      });
+  });
+
 }
+
 /**** shell ****/
 exports.updateItem = (req, res, next) => {
     var itemName = req.body.name;
@@ -86,50 +107,57 @@ exports.updateItem = (req, res, next) => {
     console.log('itemName = ' + itemName);
     console.log('isPicked = ' + isPicked);
     console.log('timeId = ' + timeId);
-
-  }
+}
 
 /**
  * POST /delete-item-from-list *
  */
 exports.deleteItemFromList = (req, res, next) => {
-  // req.sanitize('itemName');
+  //req.sanitize('name');
   const errors = req.validationErrors();
   if (errors) { req.flash('errors', errors); }
 
-  var itemId = parseInt(req.body.name);
+  var timeStampId = parseInt(req.body.createdOn);
 
   var listURL = req.originalUrl;
   listURL = listURL.split('/');
   listURL = listURL[listURL.length-1];
 
+  List.update(
+    { _id: listURL },
+    { $pull: { items: { createdOn: timeStampId } } }, (err) => {
+    if (err) { return next(err); }
+    res.send(JSON.stringify({
+          name: req.body.createdOn || null,
+    }));
+  });
 }
 
+/**
+ * Get
+ */
 exports.getListURL = (req, res, next) => {
-  User.findById(req.user.id, (err, user) => {
+  var listURL = req.originalUrl;
+  listURL = listURL.split('/');
+  listURL = listURL[listURL.length-1];
+  // use end of URL
+
+  List.findById(listURL, (err, list) => {
     if (err) { return next(err); }
-    var listURL = req.params.list;
-    var listArray = user.list
-    var userListLength = user.list.length;
-    for (var a = 0; a < userListLength; a++) {
-      if(listURL == user.list[a].listId) {
-        res.render('account/show-list', {
-          title: user.list[a].name,
-          listName: user.list[a].name,
-          createdBy: user.list[a].created_by,
-          createdOn: user.list[a].created_on,
-          listId: user.list[a].listId,
-          listNumber: user.list[a].list_number,
-          listItems: user.list[a].items
-        });
-      }
-    }
+    console.log(list.listName);
+    res.render('list/show-list', {
+      title: list.listName,
+      listItems: list.items
+    });
   });
 };
 
+/**
+ * Get
+ */
 exports.getEditList = (req, res) => {
   if (req.user) {
-    res.render('account/edit-list', {
+    res.render('list/edit-list', {
       title: 'Edit a List'
     });
   } else {
@@ -138,22 +166,16 @@ exports.getEditList = (req, res) => {
 };
 
 /**
- * POST /account/list/delete
+ * POST /list/delete
  */
 exports.postDeleteList = (req, res, next) => {
-  var rBody = req.body.name;
-
-/*
-  User.update(
-    { _id: req.user.id },
-    { $pull: { list: { name: rBody } } }, (err) => {
+  List.remove({ _id: req.body.name }, (err) => {
     if (err) { return next(err); }
-    req.flash('success', { msg: 'List ' + rBody + ' has been deleted.' });
-    res.redirect('/account/new-list');
+    res.redirect('/list/new-list');
   });
-
-  */
 };
+
+/****************************************************************/
 
 /**
  * GET /login

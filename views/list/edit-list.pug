@@ -9,10 +9,10 @@ block content
       .row
         .col-sm-offset-1.col-sm-11
           p.pull-left #{list.name}:
-          a(href="/account/list/" + list.listId)
+          a(href="/list/" + list.listId)
             button.btn.btn-to-link.pull-left.margin-r-10(type='submit')
               | Edit List
-          form.form-horizontal(action='/account/list/delete', method='POST')
+          form.form-horizontal(action='/list/delete', method='POST')
             input(type='hidden', name='_csrf', value=_csrf)
             .form-group
              input(type='hidden', name='name' value=list.name)

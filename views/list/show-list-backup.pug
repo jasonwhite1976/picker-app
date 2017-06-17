@@ -7,10 +7,6 @@ block content
 
   .row
     .col-sm-12
-      //p List name: #{listName}
-      //p List Id: #{listId}
-      //p List number: #{listNumber}
-      //form.form-horizontal#addItemForm(action="/account/list/additem/" + listId, method='POST')
       form.form-horizontal#addItemForm(method='POST')
         input(type='hidden', name='_csrf', value=_csrf)
         .form-group

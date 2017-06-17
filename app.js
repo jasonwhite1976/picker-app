@@ -81,15 +81,14 @@ app.use(session({
   store: new MongoStore({
     url: process.env.MONGODB_URI || process.env.MONGOLAB_URI,
     autoReconnect: true,
-    clear_interval: 3600
+    clear_interval: 1800
   })
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use((req, res, next) => {
-  //if (req.path === '/api/upload' || req.path === '/account/list/additem/593be2cea600841c889b26de_1497167912920') {
-  if (/^\/account/.test(req.originalUrl)) {
+    if (/^\/list/.test(req.originalUrl)) {
     next();
   } else {
     lusca.csrf()(req, res, next);
@@ -138,22 +137,19 @@ app.post('/account/password', passportConfig.isAuthenticated, userController.pos
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 
-app.get('/account/new-list', userController.getNewList);
-app.post('/account/new-list', userController.postNewList);
+/**************************************/
 
-app.get('/account/edit-list', userController.getEditList);
-//app.post('/account/edit-list', userController.getEditList);
-//Cannot POST /account/list/593be2cea600841c889b26de_1497167912920
-///account/list/additem/
-///account/list/itempicked/:item
+app.get('/list/new-list', userController.getNewList);
+app.post('/list/new-list', userController.postNewList);
 
-app.get('/account/list/:list', userController.getListURL);
+app.get('/list/edit-list', userController.getEditList);
+app.post('/list/delete/:list', userController.postDeleteList);
 
-app.post('/account/list/additem/:list', userController.postItemToList);
-app.post('/account/list/deleteitem/:list', userController.deleteItemFromList);
-app.post('/account/list/itempicked/:list', userController.updateItem);
+app.get('/list/:list', userController.getListURL);
 
-app.post('/account/list/delete', userController.postDeleteList);
+app.post('/list/additem/:list', userController.postItemToList);
+app.post('/list/deleteitem/:list', userController.deleteItemFromList);
+app.post('/list/itempicked/:list', userController.updateItem);
 
 app.get('/about', aboutController.getAbout);
 

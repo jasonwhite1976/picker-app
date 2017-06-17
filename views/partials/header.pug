@@ -27,10 +27,10 @@
               i.caret
             ul.dropdown-menu
               li
-                a(href='/account/new-list') Make a New List
+                a(href='/list/new-list') Make a New List
               li.divider
               li
-                a(href='/account/edit-list') Edit a List
+                a(href='/list/edit-list') Edit a List
           li.dropdown(class=(title == 'Account Management') ? 'active' : undefined)
             a.dropdown-toggle(href='#', data-toggle='dropdown')
               span= user.profile.name || user.email || user.id

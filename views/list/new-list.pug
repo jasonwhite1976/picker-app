@@ -5,7 +5,7 @@ block content
     h3 Make a New List
     p new-list.pug
   .row
-    form.form-horizontal(action='/account/new-list', method='POST')
+    form.form-horizontal(action='/list/new-list', method='POST')
       input(type='hidden', name='_csrf', value=_csrf)
       .form-group
         label.col-sm-3.control-label(for='new-list') New List Name
@@ -20,12 +20,12 @@ block content
       .row
         .col-sm-offset-3.col-sm-9
           p.pull-left List: #{list.listName}
-          a(href="/account/list/" + list.listId)
+          a(href="/list/" + list.id)
             button.btn.btn-to-link.pull-left.margin-r-10(type='submit')
               | Edit List
-          form.form-horizontal(action='/account/list/delete', method='POST')
+          form.form-horizontal(action='/list/delete/' + list.id, method='POST')
             input(type='hidden', name='_csrf', value=_csrf)
             .form-group
-             input(type='hidden', name='name' value=list.listName)
+             input(type='hidden', name='name' value=list.id)
              button.btn.btn-to-link.delete-list-link(type='submit')
                | Delete List
