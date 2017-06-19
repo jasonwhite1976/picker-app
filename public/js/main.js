@@ -9,6 +9,15 @@ $(document).ready(function() {
           event.preventDefault();
   });
 
+  if($(".isPickedInput").val() == "0"){
+      $(".pick-toggle").removeClass("green-text");
+      $(".pick-toggle").addClass("not-got-it");
+  }
+  if($(".isPickedInput").val() == "1"){
+      $(".pick-toggle").addClass("green-text");
+      $(".pick-toggle").removeClass("not-got-it");
+  }
+
   /*******************************************************/
 
   $('#addItemButton').click(addItemSubmit);
@@ -46,9 +55,9 @@ $(document).ready(function() {
           var listURL = window.location.href.split("/").pop();
           console.log('listURL = ' + listURL);
 
-          var timeStamp = $(this).find('.name').val();
+          var item_id = $(this).find('.itemId').val();
 
-          console.log('itemName ' + timeStamp);
+          console.log('_id ' + item_id);
 
           $.ajax({
             url: '/list/deleteitem/' + listURL,
@@ -56,7 +65,7 @@ $(document).ready(function() {
             dataType: "json",
             contentType: 'application/json',
             data: JSON.stringify ({
-              createdOn: timeStamp
+              _id: item_id
             }),
             success: function() {
               location.reload();
@@ -67,7 +76,6 @@ $(document).ready(function() {
     /*******************************************************/
 
     $(".pick-toggle").click(function(event) {
-      $(this).toggleClass( "not-got-it" );
       var hiddenField = $('.isPickedInput');
       val = hiddenField.val();
       hiddenField.val(val === "1" ? "0" : "1");
@@ -83,15 +91,14 @@ $(document).ready(function() {
 
         var itemName = $(this).find('.name').val();
         var isPicked = $(this).find('.isPickedInput').val();
-        var timeId   = $(this).find('.timeStampId').val();
+        var item_id =  $(this).find('.itemId').val();
 
-        //var itemName  = updateItemForm.itemName.value;
-        //var isPicked = updateItemForm.isPickedInput.value;
+
+        var timeId   = $(this).find('.timeStampId').val();
         isPicked = parseInt(isPicked);
-        //var timeId = updateItemForm.timeStampId.value;
+
         console.log('itemName = ' + itemName);
         console.log('isPicked = ' + isPicked);
-        console.log('timeId = ' + timeId);
 
         $.ajax({
           url: '/list/itempicked/' + listURL,
@@ -101,7 +108,7 @@ $(document).ready(function() {
           data: JSON.stringify ({
             name: itemName,
             picked: isPicked,
-            timeStampId: timeId
+            item_id: item_id
           }),
           success: function() {
             location.reload();

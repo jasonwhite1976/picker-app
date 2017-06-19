@@ -27,15 +27,15 @@ block content
           .form-group
             col-sm-4
              input(type='hidden', class='name' name=item.name value=item.name)
-             input(type='hidden', class='createdOn' name='createdOn' value=item.createdOn)
-             input(type='hidden', class='isPickedInput' name='isPickedInput' value="0")
-             button.updateItemLinks.btn.btn-to-link.pull-right.pick-toggle.pull-left.green-text.not-got-it(type='submit')
+             input(type='hidden', class='itemId' name='itemId' value=item._id)
+             input(type='hidden', class='isPickedInput' name='isPickedInput' value=item.isPicked)
+             button.updateItemLinks.btn.btn-to-link.pull-right.pick-toggle.pull-left.not-got-it(type='submit' class='isPicked' + item.isPicked)
                | #{item.name}
 
         form.form-horizontal.deleteItemForm(method='POST')
           input(type='hidden', name='_csrf', value=_csrf)
           .form-group
             col-sm-4
-             input(type='hidden', class='name' name=item.name value=item.createdOn)
+             input(type='hidden', class='itemId' name='itemId' value=item._id)
              button.btn.btn-to-link.pull-right(type='submit')
                | Delete Item

@@ -91,7 +91,7 @@ textarea {
   outline: none;
   box-shadow: none;
 }
-
+/*
 .green-text {
   color: #08d608;
 }
@@ -99,6 +99,13 @@ textarea {
 .not-got-it {
   color: red;
 }
+*/
+
+.isPicked0,
+.isPicked0:hover { color: red; }​
+
+.isPicked1,
+.isPicked1:hover { color: green; }​
 
 .pick-toggle {
   cursor: pointer;

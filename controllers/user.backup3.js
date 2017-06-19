@@ -230,15 +230,6 @@ exports.postDeleteList = (req, res, next) => {
   });
 };
 
-/*
-List.update(
-  { _id: listURL },
-  { $pull: { list: { name: rBody } } }, (err) => {
-  if (err) { return next(err); }
-  req.flash('success', { msg: 'List ' + rBody + ' has been deleted.' });
-  res.redirect('/account/new-list');
-});
-*/
 
 
 /**

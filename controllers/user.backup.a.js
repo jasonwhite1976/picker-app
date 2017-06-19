@@ -57,12 +57,13 @@ exports.postNewList = (req, res, next) => {
  * POST /add-item-to-list
  */
 exports.postItemToList = (req, res, next) => {
-  //req.assert(req.body.name, 'New item name must be at least 3 characters long').len(3);
-  //req.sanitize('itemName');
+  req.assert('name', 'New item name must be at least 3 characters long').len(3);
+  req.sanitize('itemName');
   const errors = req.validationErrors();
   if (errors) { req.flash('errors', errors); }
 
   var theDateNow = Date.now();
+
   var itemName = req.body.name;
   var isItemPicked = 0;
 
@@ -70,50 +71,66 @@ exports.postItemToList = (req, res, next) => {
   listURL = listURL.split('/');
   listURL = listURL[listURL.length-1];
 
-  var item = {
-      name       : itemName,
-      isPicked   : isItemPicked
-  };
+  List.findById(listURL, (err, list) => {
+    if (err) { return next(err); }
+    var itemsLength = list.items.length;
+    var itemName = {
+      "itemId"     : listURL + "_" + theDateNow,
+      "name"       : req.body.name,
+      "createdOn"  : theDateNow,
+      "listNumber" : itemsLength,
+      "isPicked"   : isItemPicked
+    };
+    list.items.push(itemName);
+    list.save((err) => {
+        if (err) { return next(err); }
+        //res.redirect('/list/' + listURL);
+        res.contentType('json');
+        res.send(JSON.stringify({
+        			name: req.body.name || null,
+        }));
+      });
+  });
 
-  List.findByIdAndUpdate(
-    listURL,
-    { $push: {items: item } },
-    { safe: true, upsert: true
-    }, (err) => {
-       if (err) { return next(err); }
-         res.send(JSON.stringify({
-           name: itemName || null,
-         }));
-    });
 }
 
 /**
  * POST /edit-item - update isPicked...
  */
 exports.updateItem = (req, res, next) => {
-  var itemName = req.body.name;
-  var isPicked = req.body.picked;
-  console.log("isPicked " + isPicked);
+    var itemName = req.body.name;
+    var isPicked = req.body.picked;
+    var timeStampId   = req.body.timeStampId;
 
-  var item_id = req.body.item_id;
-  console.log("item_id " + item_id);
+    var listURL = req.originalUrl;
+    listURL = listURL.split('/');
+    listURL = listURL[listURL.length-1];
 
-  var listURL = req.originalUrl;
-  listURL = listURL.split('/');
-  listURL = listURL[listURL.length-1];
+    console.log('itemName = ' + itemName);
+    console.log('isPicked = ' + isPicked);
+    console.log('timtimeStampIdeId = ' + timeStampId);
 
-  List.update(
-    { _id: listURL, "items._id": item_id },
-    { '$set': { "items.$.isPicked": isPicked } },
-    (err) => {
-     if (err) { return next(err); }
-       res.send(JSON.stringify({
-        name: itemName || null,
+    List.update(
+      { '_id': listURL, 'createdOn': timeStampId },
+      { '$set': {
+        'items.$.isPicked': isPicked }
+      }, (err) => {
+      if (err) { return next(err); }
+      res.send(JSON.stringify({
+            name: req.body.createdOn || null,
       }));
-  });
-
-
+    });
 }
+
+/*
+User.update(
+    {emp_no: req.body.emp_no, 'skills._id': 123},
+    {'$set': {
+        'skills.$.startDate': req.body.startDate
+    }},
+    function(err, numAffected) {...}
+);
+*/
 
 /**
  * POST /delete-item-from-list *
@@ -123,9 +140,7 @@ exports.deleteItemFromList = (req, res, next) => {
   const errors = req.validationErrors();
   if (errors) { req.flash('errors', errors); }
 
-  var item_id = req.body._id;
-
-  console.log("item_id " + item_id);
+  var timeStampId = parseInt(req.body.createdOn);
 
   var listURL = req.originalUrl;
   listURL = listURL.split('/');
@@ -133,12 +148,10 @@ exports.deleteItemFromList = (req, res, next) => {
 
   List.update(
     { _id: listURL },
-    { $pull: { items: { _id: item_id  } } },
-    { safe: true },
-    (err) => {
+    { $pull: { items: { createdOn: timeStampId } } }, (err) => {
     if (err) { return next(err); }
     res.send(JSON.stringify({
-          // name: req.body.createdOn || null,
+          name: req.body.createdOn || null,
     }));
   });
 }
@@ -150,6 +163,7 @@ exports.getListURL = (req, res, next) => {
   var listURL = req.originalUrl;
   listURL = listURL.split('/');
   listURL = listURL[listURL.length-1];
+  // use end of URL
 
   List.findById(listURL, (err, list) => {
     if (err) { return next(err); }
