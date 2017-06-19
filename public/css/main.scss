@@ -78,7 +78,7 @@ textarea {
   border: none;
   padding: 0;
   margin: 0 0 10px 8px;
-  color: #4d90fc;
+  color: #08d608;
   box-shadow: none;
 }
 
@@ -102,10 +102,10 @@ textarea {
 */
 
 .isPicked0,
-.isPicked0:hover { color: red; }​
+.isPicked0:hover { color: red !important; }​
 
 .isPicked1,
-.isPicked1:hover { color: green; }​
+.isPicked1:hover { color: #08d608 !important; }​
 
 .pick-toggle {
   cursor: pointer;

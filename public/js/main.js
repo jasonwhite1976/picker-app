@@ -8,7 +8,7 @@ $(document).ready(function() {
       if( !confirm('Are you sure?') )
           event.preventDefault();
   });
-
+/*
   if($(".isPickedInput").val() == "0"){
       $(".pick-toggle").removeClass("green-text");
       $(".pick-toggle").addClass("not-got-it");
@@ -17,7 +17,7 @@ $(document).ready(function() {
       $(".pick-toggle").addClass("green-text");
       $(".pick-toggle").removeClass("not-got-it");
   }
-
+*/
   /*******************************************************/
 
   $('#addItemButton').click(addItemSubmit);
@@ -75,12 +75,21 @@ $(document).ready(function() {
 
     /*******************************************************/
 
+    // jquery selector problem - use this to target the correct element?
+
+    $(".pick-toggle").click(function(){
+       var hiddenField = $(this).siblings(".isPickedInput");
+       var val = hiddenField.val();
+       hiddenField.val(val === "1" ? "0" : "1");
+       console.log(hiddenField);
+    });
+    /*
     $(".pick-toggle").click(function(event) {
       var hiddenField = $('.isPickedInput');
       val = hiddenField.val();
       hiddenField.val(val === "1" ? "0" : "1");
     });
-
+*/
     $('.updateItemForm').click(updateItemForm);
     function updateItemForm (event) {
         event.preventDefault();

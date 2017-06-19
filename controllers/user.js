@@ -109,9 +109,9 @@ exports.updateItem = (req, res, next) => {
      if (err) { return next(err); }
        res.send(JSON.stringify({
         name: itemName || null,
+        isPicked: isPicked
       }));
   });
-
 
 }
 
