@@ -13,10 +13,11 @@ block content
       | Share
     script.
       document.getElementById('shareBtn').onclick = function() {
+      var pageUrl = window.location
       FB.ui({
       method: 'share',
       display: 'popup',
-      href: window.location,
+      href: pageUrl,
       }, function(response){});
       }
 
