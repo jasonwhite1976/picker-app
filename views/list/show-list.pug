@@ -15,8 +15,11 @@ block content
       document.getElementById('shareBtn').onclick = function() {
       var pageUrl = window.location
       FB.ui({
-      method: 'share',
-      display: 'popup'
+      method: 'feed',
+      name: 'Facebook Dialogs',
+      link: document.location.href,
+      caption: document.title,
+      description: 'Some custom text here'
       }, function(response){});
       }
 
