@@ -1,12 +1,29 @@
 extends ../layout
 
 block content
-  .page-header
-    h3 List: #{title}
-    p show-list.pug
+  .title-header
+    h3.pull-left.margin-0.margin-left-15 List: #{title}
+
+    a(href="#" onclick="javascript:window.location='mailto:?subject=Link&body=A list for you: ' + window.location;")
+      button.btn.btn-primary.pull-left.margin-r-10
+        i.fa.fa-envelope
+        | Share
+    #shareBtn.btn.btn-primary.clearfix
+      i.fa.fa-facebook
+      | Share
+    script.
+      document.getElementById('shareBtn').onclick = function() {
+      FB.ui({
+      method: 'share',
+      display: 'popup',
+      href: 'https://developers.facebook.com/docs/',
+      }, function(response){});
+      }
+
+
 
   .row
-    .col-sm-12
+    .col-xs-12
       form.form-horizontal#addItemForm(method='POST')
         input(type='hidden', name='_csrf', value=_csrf)
         .form-group
@@ -18,12 +35,12 @@ block content
             button#addItemButton.btn.btn.btn-primary(type='submit')
               i.fa.fa-pencil
               | Add item
-
-    .col-md-offset-2.col-md-4.col-xs-12
+  .row
+    .col-xs-12
       h4.margin-bottom-24 #{title}
       each item in listItems
         .row
-          .col-xs-12
+          .col-md-offset-2.col-md-4.col-xs-12
             form.pull-left.form-horizontal.updateItemForm(method='POST')
               input(type='hidden', name='_csrf', value=_csrf)
               .form-group
