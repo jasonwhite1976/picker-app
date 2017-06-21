@@ -3,7 +3,7 @@ extends ../layout
 block content
   .page-header
     h3 Make a New List
-    p new-list.pug
+    //p new-list.pug
   .row
     .col-xs-12
       form.form-horizontal(action='/list/new-list', method='POST')
@@ -28,5 +28,5 @@ block content
               input(type='hidden', name='_csrf', value=_csrf)
               .form-group
                input(type='hidden', name='name' value=list.id)
-               button.btn.btn-to-link.delete-list-link(type='submit')
+               button.btn.btn-to-link.margin-top--2.delete-list-link(type='submit')
                  | Delete List

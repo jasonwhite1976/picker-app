@@ -2,10 +2,10 @@ extends ../layout
 
 block content
   .title-header
-    h3.pull-left.margin-0.margin-left-15 List: #{title}
+    h3.pull-left.margin-0.margin-left-15 #{title}
   .row
     .col-xs-12
-      a(href="#" onclick="javascript:window.location='mailto:?subject=Link&body=A list for you: ' + window.location;")
+      a(href="#" onclick="javascript:window.location='mailto:?subject=A List Zapper list for you&body=A list for you: ' + window.location;")
         button.btn.btn-primary.pull-left.margin-r-10
           i.fa.fa-envelope
           | Share
@@ -38,7 +38,7 @@ block content
               | Add item
   .row
     .col-xs-12
-      h4.margin-bottom-24 show-list.pug
+      //h4.margin-bottom-24 show-list.pug
       each item in listItems
         .row.show-list-row
           .col-md-offset-2.col-md-4.col-xs-12
