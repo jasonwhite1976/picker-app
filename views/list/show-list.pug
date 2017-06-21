@@ -3,30 +3,28 @@ extends ../layout
 block content
   .title-header
     h3.pull-left.margin-0.margin-left-15 List: #{title}
-
-    a(href="#" onclick="javascript:window.location='mailto:?subject=Link&body=A list for you: ' + window.location;")
-      button.btn.btn-primary.pull-left.margin-r-10
-        i.fa.fa-envelope
-        | Share
-    #shareBtn.btn.btn-primary.clearfix
-      i.fa.fa-facebook
-      | Share
-    script.
-      document.getElementById('shareBtn').onclick = function() {
-      var pageUrl = window.location
-      FB.ui({
-      method: 'feed',
-      name: 'List Zapper list',
-      link: document.location.href,
-      caption: document.title,
-      description: 'A list of items from List Zapper'
-      }, function(response){});
-      }
-
-
-
   .row
     .col-xs-12
+      a(href="#" onclick="javascript:window.location='mailto:?subject=Link&body=A list for you: ' + window.location;")
+        button.btn.btn-primary.pull-left.margin-r-10
+          i.fa.fa-envelope
+          | Share
+      #shareBtn.btn.btn-primary.clearfix
+        i.fa.fa-facebook
+        | Share
+      script.
+        document.getElementById('shareBtn').onclick = function() {
+        var pageUrl = window.location
+        FB.ui({
+        method: 'feed',
+        name: 'List Zapper list',
+        link: document.location.href,
+        caption: document.title,
+        description: 'A list of items from List Zapper'
+        }, function(response){});
+        }
+  .row
+    .col-xs-12.margin-top-15
       form.form-horizontal#addItemForm(method='POST')
         input(type='hidden', name='_csrf', value=_csrf)
         .form-group
@@ -40,9 +38,9 @@ block content
               | Add item
   .row
     .col-xs-12
-      h4.margin-bottom-24 #{title}
+      h4.margin-bottom-24 show-list.pug
       each item in listItems
-        .row
+        .row.show-list-row
           .col-md-offset-2.col-md-4.col-xs-12
             form.pull-left.form-horizontal.updateItemForm(method='POST')
               input(type='hidden', name='_csrf', value=_csrf)
@@ -51,7 +49,7 @@ block content
                  input(type='hidden', class='name' name=item.name value=item.name)
                  input(type='hidden', class='itemId' name='itemId' value=item._id)
                  input(type='hidden', class='isPickedInput' name='isPickedInput' value=item.isPicked)
-                 button.updateItemLinks.btn.btn-to-link.pull-right.pick-toggle.pull-left(type='submit' class='isPicked' + item.isPicked)
+                 button.updateItemLinks.btn.btn-to-link-item.pull-right.pick-toggle.pull-left(type='submit' class='isPicked' + item.isPicked)
                    | #{item.name}
 
             form.pull-right.form-horizontal.deleteItemForm(method='POST')

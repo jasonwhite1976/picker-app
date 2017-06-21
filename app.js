@@ -139,7 +139,7 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
 
 /**************************************/
 
-app.get('/list/new-list', userController.getNewList);
+app.get('/list/new-edit-list', userController.getNewList);
 app.post('/list/new-list', userController.postNewList);
 
 app.get('/list/edit-list', userController.getEditList);

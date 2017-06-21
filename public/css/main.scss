@@ -77,8 +77,8 @@ textarea {
   background-color: transparent;
   border: none;
   padding: 0;
-  margin: 0 15px;
-  color: #08d608;
+  margin: 0 0 0 15px;
+  color: #4da5f4;
   box-shadow: none;
 }
 
@@ -86,6 +86,25 @@ textarea {
 .btn-to-link:active,
 .btn-to-link:active:focus,
 .btn-to-link:hover {
+  color: #4da5f4;
+  text-decoration: underline;
+  outline: none;
+  box-shadow: none;
+}
+
+.btn-to-link-item {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  margin: 0 0 0 15px;
+  color: #08d608;
+  box-shadow: none;
+}
+
+.btn-to-link-item:focus,
+.btn-to-link-item:active,
+.btn-to-link-item:active:focus,
+.btn-to-link-item:hover {
   color: #4d90fc;
   text-decoration: underline;
   outline: none;
@@ -106,6 +125,10 @@ textarea {
   margin: 0px;
 }
 
+.margin-top-15 {
+  margin: 15px 0 0;
+}
+
 .margin-left-15 {
   margin: 0px 15px 0 0;
 }
@@ -119,5 +142,9 @@ textarea {
 }
 
 .title-header {
-  margin: 10px 0 62px;
+  margin: 10px 0 44px;
+}
+
+.show-list-row {
+    margin-right: 2px;
 }

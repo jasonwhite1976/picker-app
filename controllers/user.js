@@ -9,7 +9,7 @@ const User = require('../models/User');
 const List = require('../models/List');
 
 /**
- * GET /new-list
+ * GET /new-edit-list
  */
 exports.getNewList = (req, res) => {
   // Get the users lists
@@ -18,8 +18,8 @@ exports.getNewList = (req, res) => {
   .exec(function (err, lists) {
     if (err) return handleError(err);
     if (req.user) {
-      res.render('list/new-list', {
-        title: 'Make a New List',
+      res.render('list/new-edit-list', {
+        title: 'Make/Edit a List',
         lists: lists
       });
     } else {
@@ -29,7 +29,7 @@ exports.getNewList = (req, res) => {
 };
 
 /**
- * POST /new-list
+ * POST /new-edit-list
  */
 exports.postNewList = (req, res, next) => {
   req.assert('name', 'New list name must be at least 3 characters long').len(3);
@@ -37,7 +37,7 @@ exports.postNewList = (req, res, next) => {
   const errors = req.validationErrors();
   if (errors) {
     req.flash('errors', errors);
-    return res.redirect('/list/new-list');
+    return res.redirect('/list/new-edit-list');
   }
   User.findById(req.user.id, (err, user) => {
     if (err) { return next(err); }
@@ -48,7 +48,7 @@ exports.postNewList = (req, res, next) => {
     list.save((err) => {
       if (err) { return next(err); }
       req.flash('success', { msg: req.body.name + ' created' });
-      res.redirect('/list/new-list');
+      res.redirect('/list/new-edit-list');
     });
   });
 }
@@ -180,7 +180,7 @@ exports.getEditList = (req, res) => {
 exports.postDeleteList = (req, res, next) => {
   List.remove({ _id: req.body.name }, (err) => {
     if (err) { return next(err); }
-    res.redirect('/list/new-list');
+    res.redirect('/list/new-edit-list');
   });
 };
 

@@ -1,15 +1,15 @@
 {
-  "name": "hackathon-starter",
-  "version": "4.3.0",
-  "description": "A boilerplate for Node.js web applications",
+  "name": "list-zapper",
+  "version": "0.1.0",
+  "description": "A item picking app for shoppings lists",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sahat/hackathon-starter.git"
+    "url": "https://github.com/jasonwhite1976/picker-app"
   },
   "engines": {
     "node": "^6.10.3"
   },
-  "author": "Sahat Yalkabov",
+  "author": "Jason White",
   "license": "MIT",
   "scripts": {
     "start": "node app.js",

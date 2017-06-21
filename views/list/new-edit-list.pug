@@ -20,7 +20,7 @@ block content
       each list in lists
         .row
           .col-sm-offset-3.col-sm-9
-            p.pull-left List: #{list.listName}
+            p.pull-left #{list.listName}
             a(href="/list/" + list.id)
               button.btn.btn-to-link.pull-left.margin-r-10(type='submit')
                 | Edit List
