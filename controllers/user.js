@@ -294,7 +294,7 @@ exports.postSignup = (req, res, next) => {
       };
       return transporter.sendMail(mailOptions)
         .then(() => {
-          
+
         });
     });
   });
@@ -466,7 +466,7 @@ exports.postReset = (req, res, next) => {
 
     const mailOptions = {
       to: user.email,
-      from: '"Furnace1" <noreply@furnace1.tk>', // sender address
+      from: '"listzapper" <noreply@listzapper.tk>', // sender address
       subject: 'Your password has been changed',
       text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
     };
@@ -536,11 +536,11 @@ exports.postForgot = (req, res, next) => {
 
     const mailOptions = {
       to: user.email,
-      from: '"Furnace1" <noreply@furnace1.tk>', // sender address
+      from: '"listzapper" <noreply@listzapper.tk>', // sender address
       subject: 'Reset your password on Hackathon Starter',
       text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n
         Please click on the following link, or paste this into your browser to complete the process:\n\n
-        http://www.furnace1.tk /reset/${token}\n\n
+        http://www.listzapper.tk /reset/${token}\n\n
         If you did not request this, please ignore this email and your password will remain unchanged.\n`
     };
     return transporter.sendMail(mailOptions)
