@@ -1,4 +1,3 @@
-// add categories somehow...
 const bluebird = require('bluebird');
 const crypto = bluebird.promisifyAll(require('crypto'));
 const nodemailer = require('nodemailer');
@@ -10,48 +9,19 @@ const List = require('../models/List');
 
 /**
  * GET /
- * Home page.
-
-exports.index = (req, res) => {
-  res.render('home', {
-    title: 'Home'
-  });
-};
-*/
-exports.index = (req, res) => {
-  // Get the users lists
-  if (req.user) {
-      List
-      .find({ user: req.user.id })
-      .exec(function (err, lists) {
-        if (err) return handleError(err);
-        if (req.user) {
-          res.render('home-logged-in', {
-            title: 'Make/Edit a List',
-            lists: lists
-          });
-        } else {
-
-        }
-      });
-  } else {
-    res.render('home', {
-      title: 'Home'
-    });
-  }
-};
-
+ * Home page - logged in.
+ */
 /**
  * GET /new-edit-list
-
-exports.getNewList = (req, res) => {
+ */
+exports.homepageWithLists = (req, res) => {
   // Get the users lists
   List
   .find({ user: req.user.id })
   .exec(function (err, lists) {
     if (err) return handleError(err);
     if (req.user) {
-      res.render('list/new-edit-list', {
+      res.render('home-logged-in', {
         title: 'Make/Edit a List',
         lists: lists
       });
@@ -60,4 +30,3 @@ exports.getNewList = (req, res) => {
     }
   });
 };
-*/

@@ -18,10 +18,6 @@ const passport = require('passport');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
-const multer = require('multer');
-const moment = require('moment');
-
-const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -32,14 +28,11 @@ dotenv.load({ path: '.env' });
  * Controllers (route handlers).
  */
 const homeController = require('./controllers/home');
+const homeLoggedInController = require('./controllers/homeLoggedIn');
 const userController = require('./controllers/user');
-const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
 const aboutController = require('./controllers/about');
 
-/**
- * API keys and Passport configuration.
- */
 const passportConfig = require('./config/passport');
 
 /**
@@ -139,6 +132,8 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
 
 /**************************************/
 
+app.get('/home', homeLoggedInController.homepageWithLists);
+
 app.get('/list/new-edit-list', userController.getNewList);
 app.post('/list/new-list', userController.postNewList);
 
@@ -152,13 +147,6 @@ app.post('/list/deleteitem/:list', userController.deleteItemFromList);
 app.post('/list/itempicked/:list', userController.updateItem);
 
 app.get('/about', aboutController.getAbout);
-
-/**
- * API examples routes.
- */
-app.get('/api', apiController.getApi);
-app.get('/api/upload', apiController.getFileUpload);
-app.post('/api/upload', upload.single('myFile'), apiController.postFileUpload);
 
 /**
  * Error Handler.

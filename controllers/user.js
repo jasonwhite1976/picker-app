@@ -1,4 +1,4 @@
-// routes - categories
+// add categories somehow...
 const bluebird = require('bluebird');
 const crypto = bluebird.promisifyAll(require('crypto'));
 const nodemailer = require('nodemailer');
