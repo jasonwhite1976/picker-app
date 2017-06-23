@@ -281,20 +281,20 @@ exports.postSignup = (req, res, next) => {
           return next(err);
         }
       });
-      req.flash('success', { msg: 'Signup Success! Welcome to Picker.' });
+      req.flash('success', { msg: 'Hi, Thanks for signing up. Welcome to List Zapper.' });
       res.redirect('/');
 
       var transporter = nodemailer.createTransport(mg(auth));
 
       const mailOptions = {
         to: user.email,
-        from: '"Furnace1" <noreply@furnace1.tk>', // sender address
-        subject: 'Welcome to Furnace1',
-        text: `Hello,\n\nWelcome to Furnace1\n`
+        from: '"List Zapper" <noreply@listzapper.tk>', // sender address
+        subject: 'Welcome to List Zapper',
+        text: `Hello,\n\nWelcome to List Zapper\n`
       };
       return transporter.sendMail(mailOptions)
         .then(() => {
-          req.flash('success', { msg: 'Signup Success! Welcome to Picker.' });
+          
         });
     });
   });
