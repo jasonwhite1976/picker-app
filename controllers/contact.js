@@ -1,11 +1,11 @@
 const nodemailer = require('nodemailer');
-const mg = require('nodemailer-mailgun-transport');
+//const mg = require('nodemailer-mailgun-transport');
 const auth =  require('../auth.json');
 
-var transporter = nodemailer.createTransport(mg(auth));
+//var transporter = nodemailer.createTransport(mg(auth));
 
-var api_key = process.env.MAILGUN_API_KEY || process.env.MAILGUN_API_PUBLIC_KEY;
-var domain = 'www.listzapper.tk';
+var api_key = process.env.MAILGUN_API_KEY || process.env.MAILGUN_API_DUMMY_KEY;
+var domain = 'mg.listzapper.tk';
 var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
 /**
@@ -29,7 +29,7 @@ exports.postContact = (req, res) => {
 
   const errors = req.validationErrors();
 
-  if (err) {
+  if (errors) {
     req.flash('errors', errors);
     return res.redirect('/contact');
   }
