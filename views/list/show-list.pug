@@ -20,10 +20,9 @@ block content
         | Share
       script.
         document.getElementById('shareBtn').onclick=function(){
-          var pageUrl = window.location;
           FB.ui({
           method: 'feed',
-          name: 'List Zapper list',
+          name: document.title,
           link: document.location.href,
           caption: document.title,
           description: 'A list of items from List Zapper'
