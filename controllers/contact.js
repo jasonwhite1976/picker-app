@@ -4,6 +4,10 @@ const auth =  require('../auth.json');
 
 var transporter = nodemailer.createTransport(mg(auth));
 
+var api_key = MAILGUN_API_KEY;
+var domain = 'www.listzapper.tk';
+var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+
 /**
  * GET /contact
  * Contact form page.
@@ -30,10 +34,27 @@ exports.postContact = (req, res) => {
     return res.redirect('/contact');
   }
 
-  var mailOptions = {
-    from: '"Furnace1" <noreply@furnace1.tk>', // sender address
+  var emailData = {
+    from: '"List Zapper" <noreply@listzapper.tk>', // sender address
     to: `${req.body.name} <${req.body.email}>`,
-    subject: 'Contact Form | Express Starter',
+    subject: 'Contact Form | List Zapper',
+    text: req.body.message
+  };
+
+  mailgun.messages().send(emailData, function (error, body) {
+    if (err) {
+      req.flash('errors', { msg: err.message });
+      return res.redirect('/contact');
+    }
+    req.flash('success', { msg: 'Email has been sent successfully!' });
+    res.redirect('/contact');
+  });
+
+/*
+  var mailOptions = {
+    from: '"List Zapper" <noreply@listzapper.tk>', // sender address
+    to: `${req.body.name} <${req.body.email}>`,
+    subject: 'Contact Form | List Zapper',
     text: req.body.message
   };
 
@@ -44,5 +65,5 @@ exports.postContact = (req, res) => {
     }
     req.flash('success', { msg: 'Email has been sent successfully!' });
     res.redirect('/contact');
-  });
+  });*/
 };
