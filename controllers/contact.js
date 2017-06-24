@@ -1,12 +1,4 @@
-const nodemailer = require('nodemailer');
-//const mg = require('nodemailer-mailgun-transport');
-const auth =  require('../auth.json');
-
-//var transporter = nodemailer.createTransport(mg(auth));
-
-//(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
-
-var api_key = process.env.MAILGUN_API_KEY || process.env.MAILGUN_API_KEY;
+var api_key = process.env.MAILGUN_API_KEY || process.env.MAILGUN_API_SANDBOX_KEY;
 var domain = 'mg.listzapper.tk';
 var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
