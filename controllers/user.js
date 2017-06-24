@@ -286,7 +286,7 @@ exports.postSignup = (req, res, next) => {
           return next(err);
         }
       });
-      req.flash('success', { msg: 'Hi, Thanks for signing up. Welcome to List Zapper.' });
+      req.flash('success', { msg: 'Thanks for signing up. Welcome to List Zapper.' });
       res.redirect('/');
 
       const emailData = {
@@ -470,7 +470,7 @@ exports.postReset = (req, res, next) => {
 
     const emailData = {
       to: user.email,
-      from: '"listzapper" <noreply@listzapper.tk>', // sender address
+      from: '"List Zapper" <noreply@listzapper.tk>', // sender address
       subject: 'Your password has been changed',
       text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
     };
@@ -545,10 +545,10 @@ exports.postForgot = (req, res, next) => {
     const emailData = {
       to: user.email,
       from: '"listzapper" <noreply@listzapper.tk>', // sender address
-      subject: 'Reset your password on Hackathon Starter',
+      subject: 'List Zapper: reset your password',
       text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n
         Please click on the following link, or paste this into your browser to complete the process:\n\n
-        http://www.listzapper.tk /reset/${token}\n\n
+        http://www.listzapper.tk/reset/${token}\n\n
         If you did not request this, please ignore this email and your password will remain unchanged.\n`
     };
 

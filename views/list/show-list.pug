@@ -8,34 +8,40 @@ block content
       a(href="#" onclick="javascript:window.location='mailto:?subject=A List Zapper list for you&body=A list for you: ' + window.location;")
         button.btn.btn-primary.pull-left.margin-r-10
           i.fa.fa-envelope
-          | Share
+          | Email
+      a(href="https://twitter.com/share" data-show-count="false")
+        button.btn.btn-primary.pull-left.margin-r-10
+          i.fa.fa-twitter
+          | Tweet
+      script.
+        async src="//platform.twitter.com/widgets.js" charset="utf-8"
       #shareBtn.btn.btn-primary.clearfix
         i.fa.fa-facebook
         | Share
       script.
-        document.getElementById('shareBtn').onclick = function() {
-        var pageUrl = window.location
-        FB.ui({
-        method: 'feed',
-        name: 'List Zapper list',
-        link: document.location.href,
-        caption: document.title,
-        description: 'A list of items from List Zapper'
-        }, function(response){});
+        document.getElementById('shareBtn').onclick=function(){
+          var pageUrl = window.location;
+          FB.ui({
+          method: 'feed',
+          name: 'List Zapper list',
+          link: document.location.href,
+          caption: document.title,
+          description: 'A list of items from List Zapper'
+          }, function(response){});
         }
   .row
     .col-xs-12.margin-top-15
       form.form-horizontal#addItemForm(method='POST')
         input(type='hidden', name='_csrf', value=_csrf)
         .form-group
-          label.col-sm-2.control-label(for='add-item') Add item
+          label.col-sm-2.control-label(for='add-item') New item
           .col-sm-8
             input.form-control(type='text', name='itemName', id='itemName')
         .form-group
           .col-sm-offset-2.col-sm-4
             button#addItemButton.btn.btn.btn-primary(type='submit')
               i.fa.fa-pencil
-              | Add item
+              | Add
   .row
     .col-xs-12
       //h4.margin-bottom-24 show-list.pug
