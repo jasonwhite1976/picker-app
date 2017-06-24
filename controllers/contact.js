@@ -1,5 +1,5 @@
 var api_key = process.env.MAILGUN_API_SANDBOX_KEY || MAILGUN_API_KEY;
-var domain  = process.env.DOMAIN;
+var domain  = 'mg.listzapper.tk';
 
 var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
