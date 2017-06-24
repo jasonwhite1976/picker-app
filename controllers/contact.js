@@ -38,9 +38,9 @@ exports.postContact = (req, res) => {
 
   var emailData = {
     from: '"List Zapper" <noreply@listzapper.tk>', // sender address
-    to: `${req.body.name} <${req.body.email}>`,
+    to: `jason@codrbase.com`,
     subject: 'Contact Form | List Zapper',
-    text: req.body.message
+    text: req.body.name + req.body.message
   };
 
   mailgun.messages().send(emailData, function (err, body) {
