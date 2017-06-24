@@ -1,8 +1,13 @@
 const nodemailer = require('nodemailer');
+//const mg = require('nodemailer-mailgun-transport');
+const auth =  require('../auth.json');
+
+//var transporter = nodemailer.createTransport(mg(auth));
+
+//(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
 
 var api_key = process.env.MAILGUN_API_SANDBOX_KEY || MAILGUN_API_KEY;
 var domain = 'mg.listzapper.tk';
-
 var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
 /**
@@ -35,7 +40,7 @@ exports.postContact = (req, res) => {
     from: '"List Zapper" <noreply@listzapper.tk>', // sender address
     to: `jason@codrbase.com`,
     subject: 'Contact Form | List Zapper',
-    text: req.body.message
+    text: req.body.name + req.body.message
   };
 
   mailgun.messages().send(emailData, function (err, body) {
@@ -46,4 +51,21 @@ exports.postContact = (req, res) => {
     req.flash('success', { msg: 'Email has been sent successfully!' });
     res.redirect('/contact');
   });
+
+/*
+  var mailOptions = {
+    from: '"List Zapper" <noreply@listzapper.tk>', // sender address
+    to: `${req.body.name} <${req.body.email}>`,
+    subject: 'Contact Form | List Zapper',
+    text: req.body.message
+  };
+
+  transporter.sendMail(mailOptions, (err) => {
+    if (err) {
+      req.flash('errors', { msg: err.message });
+      return res.redirect('/contact');
+    }
+    req.flash('success', { msg: 'Email has been sent successfully!' });
+    res.redirect('/contact');
+  });*/
 };
