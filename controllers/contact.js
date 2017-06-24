@@ -29,7 +29,7 @@ exports.postContact = (req, res) => {
 
   const errors = req.validationErrors();
 
-  if (errors) {
+  if (err) {
     req.flash('errors', errors);
     return res.redirect('/contact');
   }
@@ -41,7 +41,7 @@ exports.postContact = (req, res) => {
     text: req.body.message
   };
 
-  mailgun.messages().send(emailData, function (error, body) {
+  mailgun.messages().send(emailData, function (err, body) {
     if (err) {
       req.flash('errors', { msg: err.message });
       return res.redirect('/contact');
