@@ -19,10 +19,10 @@ block content
         i.fa.fa-facebook
         | Share
       script.
-        document.getElementById('shareBtn').onclick=function(){
+        document.getElementById('shareBtn').onclick=function(){          
           FB.ui({
           method: 'feed',
-          name: document.title,
+          name: 'List Zapper list',
           link: document.location.href,
           caption: document.title,
           description: 'A list of items from List Zapper'
