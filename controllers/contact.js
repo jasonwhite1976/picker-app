@@ -1,7 +1,7 @@
-var api_key = process.env.MAILGUN_API_KEY || process.env.MAILGUN_API_SANDBOX_KEY;
-var domain = process.env.DOMAIN;
+const api_key = process.env.MAILGUN_API_KEY || process.env.MAILGUN_API_SANDBOX_KEY;
+const domain  = process.env.DOMAIN;
 
-var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+const mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
 /**
  * GET /contact

@@ -1,9 +1,14 @@
 // add categories somehow...
 const bluebird = require('bluebird');
 const crypto = bluebird.promisifyAll(require('crypto'));
-const nodemailer = require('nodemailer');
-const mg = require('nodemailer-mailgun-transport');
-const auth =  require('../auth.json');
+//const nodemailer = require('nodemailer');
+//const mg = require('nodemailer-mailgun-transport');
+//const auth =  require('../auth.json');
+const api_key = process.env.MAILGUN_API_KEY || process.env.MAILGUN_API_SANDBOX_KEY;
+const domain  = process.env.DOMAIN;
+
+const mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+
 const passport = require('passport');
 const User = require('../models/User');
 const List = require('../models/List');
@@ -284,22 +289,23 @@ exports.postSignup = (req, res, next) => {
       req.flash('success', { msg: 'Hi, Thanks for signing up. Welcome to List Zapper.' });
       res.redirect('/');
 
-      var transporter = nodemailer.createTransport(mg(auth));
-
-      const mailOptions = {
+      const emailData = {
         to: user.email,
         from: '"List Zapper" <noreply@listzapper.tk>', // sender address
         subject: 'Welcome to List Zapper',
         text: `Hello,\n\nWelcome to List Zapper\n`
       };
-      return transporter.sendMail(mailOptions)
-        .then(() => {
 
-        });
+      mailgun.messages().send(emailData, function (err, body) {
+        if (err) {
+          req.flash('errors', { msg: err.message });
+        }
+        req.flash('success', { msg: 'Email has been sent successfully!' });
+      });
+
     });
   });
 };
-
 /**
  * GET /account
  */
@@ -462,18 +468,20 @@ exports.postReset = (req, res, next) => {
   const sendResetPasswordEmail = (user) => {
     if (!user) { return; }
 
-    var transporter = nodemailer.createTransport(mg(auth));
-
-    const mailOptions = {
+    const emailData = {
       to: user.email,
       from: '"listzapper" <noreply@listzapper.tk>', // sender address
       subject: 'Your password has been changed',
       text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
     };
-    return transporter.sendMail(mailOptions)
-      .then(() => {
-        req.flash('success', { msg: 'Success! Your password has been changed.' });
-      });
+
+    mailgun.messages().send(emailData, function (err, body) {
+      if (err) {
+        req.flash('errors', { msg: err.message });
+        return res.redirect('/contact');
+      }
+      req.flash('success', { msg: 'Email has been sent successfully!' });
+    });
   };
 
   resetPassword()
@@ -534,7 +542,7 @@ exports.postForgot = (req, res, next) => {
 
     var transporter = nodemailer.createTransport(mg(auth));
 
-    const mailOptions = {
+    const emailData = {
       to: user.email,
       from: '"listzapper" <noreply@listzapper.tk>', // sender address
       subject: 'Reset your password on Hackathon Starter',
@@ -543,10 +551,14 @@ exports.postForgot = (req, res, next) => {
         http://www.listzapper.tk /reset/${token}\n\n
         If you did not request this, please ignore this email and your password will remain unchanged.\n`
     };
-    return transporter.sendMail(mailOptions)
-      .then(() => {
-        req.flash('info', { msg: `An e-mail has been sent to ${user.email} with further instructions.` });
-      });
+
+    mailgun.messages().send(emailData, function (err, body) {
+      if (err) {
+        req.flash('errors', { msg: err.message });
+      }
+      req.flash('success', { msg: 'Email has been sent successfully!' });
+    });
+
   };
 
   //${req.headers.host}
