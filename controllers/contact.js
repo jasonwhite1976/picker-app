@@ -6,7 +6,7 @@ const auth =  require('../auth.json');
 
 //(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
 
-var api_key = process.env.MAILGUN_API_SANDBOX_KEY || MAILGUN_API_KEY;
+var api_key = process.env.MAILGUN_API_SANDBOX_KEY || process.env.MAILGUN_API_KEY;
 var domain = 'mg.listzapper.tk';
 var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
@@ -40,7 +40,7 @@ exports.postContact = (req, res) => {
     from: '"List Zapper" <noreply@listzapper.tk>', // sender address
     to: `jason@codrbase.com`,
     subject: 'Contact Form | List Zapper',
-    text: req.body.name + req.body.message
+    text: req.body.message
   };
 
   mailgun.messages().send(emailData, function (err, body) {
