@@ -540,7 +540,7 @@ exports.postForgot = (req, res, next) => {
     if (!user) { return; }
     const token = user.passwordResetToken;
 
-    var transporter = nodemailer.createTransport(mg(auth));
+    //var transporter = nodemailer.createTransport(mg(auth));
 
     const emailData = {
       to: user.email,
