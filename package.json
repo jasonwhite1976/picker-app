@@ -1,13 +1,13 @@
 {
   "name": "list-zapper",
   "version": "0.1.0",
-  "description": "A item picking app for shoppings lists",
+  "description": "A item picking app for making lists",
   "repository": {
     "type": "git",
     "url": "https://github.com/jasonwhite1976/picker-app"
   },
   "engines": {
-    "node": "^6.10.3"
+    "node": "^6.11.1"
   },
   "author": "Jason White",
   "license": "MIT",
