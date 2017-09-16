@@ -1,9 +1,6 @@
 // add categories somehow...
 const bluebird = require('bluebird');
 const crypto = bluebird.promisifyAll(require('crypto'));
-//const nodemailer = require('nodemailer');
-//const mg = require('nodemailer-mailgun-transport');
-//const auth =  require('../auth.json');
 const api_key = process.env.MAILGUN_API_KEY || process.env.MAILGUN_API_SANDBOX_KEY;
 const domain  = process.env.DOMAIN;
 
@@ -185,7 +182,11 @@ exports.getEditList = (req, res) => {
 exports.postDeleteList = (req, res, next) => {
   List.remove({ _id: req.body.name }, (err) => {
     if (err) { return next(err); }
-    res.redirect('/list/new-edit-list');
+    //res.redirect('/list/new-edit-list');
+     res.send(JSON.stringify({
+      name: itemName || null,
+      isPicked: isPicked
+    }));
   });
 };
 
@@ -560,8 +561,6 @@ exports.postForgot = (req, res, next) => {
     });
 
   };
-
-  //${req.headers.host}
 
   createRandomToken
     .then(setRandomToken)

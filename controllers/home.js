@@ -1,8 +1,10 @@
 // add categories somehow...
 const bluebird = require('bluebird');
 const crypto = bluebird.promisifyAll(require('crypto'));
+
 const nodemailer = require('nodemailer');
 const mg = require('nodemailer-mailgun-transport');
+
 const auth =  require('../auth.json');
 const passport = require('passport');
 const User = require('../models/User');

@@ -31,7 +31,7 @@ exports.postContact = (req, res) => {
 
   var emailData = {
     from: '"List Zapper" <noreply@listzapper.tk>', // sender address
-    to: `jason@codrbase.com`,
+    to: `jason@cbaseseven.com`,
     subject: 'Contact Form | List Zapper',
     text: req.body.message
   };
@@ -44,21 +44,4 @@ exports.postContact = (req, res) => {
     req.flash('success', { msg: 'Email has been sent successfully!' });
     res.redirect('/contact');
   });
-
-/*
-  var mailOptions = {
-    from: '"List Zapper" <noreply@listzapper.tk>', // sender address
-    to: `${req.body.name} <${req.body.email}>`,
-    subject: 'Contact Form | List Zapper',
-    text: req.body.message
-  };
-
-  transporter.sendMail(mailOptions, (err) => {
-    if (err) {
-      req.flash('errors', { msg: err.message });
-      return res.redirect('/contact');
-    }
-    req.flash('success', { msg: 'Email has been sent successfully!' });
-    res.redirect('/contact');
-  });*/
 };
