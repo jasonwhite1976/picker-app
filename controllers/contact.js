@@ -15,7 +15,7 @@ exports.getContact = (req, res) => {
 
 /**
  * POST /contact
- * Send a contact form via Nodemailer.
+ * Send a contact form via MailGun.
  */
 exports.postContact = (req, res) => {
   req.assert('name', 'Name cannot be blank').notEmpty();

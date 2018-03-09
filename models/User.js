@@ -23,18 +23,7 @@ const userSchema = new mongoose.Schema({
 /**
  * Password hash middleware.
  */
-userSchema.pre('save', function save(next) {
-  const user = this;
-  if (!user.isModified('password')) { return next(); }
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) { return next(err); }
-    bcrypt.hash(user.password, salt, null, (err, hash) => {
-      if (err) { return next(err); }
-      user.password = hash;
-      next();
-    });
-  });
-});
+
 
 /**
  * Helper method for validating user's password.
@@ -58,25 +47,6 @@ userSchema.methods.gravatar = function gravatar(size) {
   const md5 = crypto.createHash('md5').update(this.email).digest('hex');
   return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
 };
-
-
-/*
-var aaron = new User({ _id: req.id, name: 'Aaron', age: 100 });
-
-aaron.save(function (err) {
-  if (err) return handleError(err);
-
-  var story1 = new Story({
-    title: "Once upon a timex.",
-    _creator: aaron._id    // assign the _id from the person
-  });
-
-  story1.save(function (err) {
-    if (err) return handleError(err);
-    // thats it!
-  });
-});
-*/
 
 const User = mongoose.model('User', userSchema);
 
